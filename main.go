@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	_ "net/http"
+	"wwgo/router"
 
 	_ "github.com/gin-gonic/gin"
 )
@@ -18,6 +19,7 @@ func main() {
 			"msg":  "hello world",
 		})
 	})
+	router.Router(r)
 	//3.监听端口
 	r.Run(":8075")
 }

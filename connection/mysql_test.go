@@ -6,10 +6,9 @@ import (
 )
 
 type User struct {
-	Id       string `json:"id" form:"id"`
+	Id       int    `json:"id" form:"id"`
 	Username string `json:"Username" form:"Username"`
 	Password string `json:"password" form:"password"`
-	Sex      string `json:"sex" form:"sex"`
 }
 
 func TestMysql(t *testing.T) {
