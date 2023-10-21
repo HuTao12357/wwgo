@@ -150,6 +150,7 @@ func BatchUserInsert(c *gin.Context) {
 	db := getNewDB()
 	for i := range user {
 		user[i].Id = uuid.NewV4().String()
+		user[i].Password = utils.HashAndSalt([]byte(user[i].Password))
 	}
 	res := db.Table("user").CreateInBatches(&user, len(user))
 	if res.Error != nil {
