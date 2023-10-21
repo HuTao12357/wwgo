@@ -13,5 +13,6 @@ func Router(r *gin.Engine) {
 		user.POST("Insert", us.Insert)
 		user.GET("GetById", us.GetById)
 		user.GET("UserQuery", us.UsersQuery)
+		user.POST("BatchUserInsert", us.BatchUserInsert)
 	}
 }

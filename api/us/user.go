@@ -136,3 +136,32 @@ func UsersQuery(c *gin.Context) {
 	})
 	return
 }
+
+// 批量添加,让前端传json
+func BatchUserInsert(c *gin.Context) {
+	var user []User
+	if err := c.ShouldBind(&user); err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": "2001",
+			"msg":  "无效参数",
+		})
+		return
+	}
+	db := getNewDB()
+	for i := range user {
+		user[i].Id = uuid.NewV4().String()
+	}
+	res := db.Table("user").CreateInBatches(&user, len(user))
+	if res.Error != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  "批量添加失败",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": http.StatusOK,
+		"msg":  "批量添加成功",
+	})
+	return
+}
