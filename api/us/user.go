@@ -101,10 +101,12 @@ func GetById(c *gin.Context) {
 	id := c.Query("id") //接收前端传的id
 	var user User
 	db := getNewDB()
-	res := db.Table("user").Where("id=?", id).First(&user)
+	//通过Debug模式查看执行的sql
+	res := db.Debug().Table("user").Where("id=?", id).Find(&user)
 	if res.Error != nil {
 		fmt.Println("=======查询数据库出错")
 	}
+
 	if res.RowsAffected == 0 {
 		c.JSON(http.StatusOK, gin.H{
 			"code": http.StatusBadRequest,
