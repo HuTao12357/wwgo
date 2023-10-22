@@ -4,6 +4,7 @@ go 1.21.0
 
 require (
 	github.com/gin-gonic/gin v1.9.1
+	github.com/jasonlvhit/gocron v0.0.1
 	github.com/satori/go.uuid v1.2.0
 	golang.org/x/crypto v0.9.0
 	gorm.io/driver/mysql v1.5.2
