@@ -42,6 +42,7 @@ func Login(c *gin.Context) {
 		return
 	}
 	var DBword string
+	var id string
 	db := getNewDB()
 	//sql := fmt.Sprintf("select * from user where username='%s' ", user.Username) //原生sql
 	result := db.Table("user").Where("username = ?", name).First(&user)
@@ -49,6 +50,7 @@ func Login(c *gin.Context) {
 		fmt.Println("登陆查询数据库没有数据")
 	} else {
 		DBword = user.Password
+		id = user.Id
 	}
 	a := utils.ComparePasswords(DBword, []byte(password))
 	if a == false {
@@ -62,9 +64,14 @@ func Login(c *gin.Context) {
 	var count int64
 	count = db.Table("user").Where("username = ?", name).Where("password = ?", password).Count(&count).RowsAffected
 	if count > 0 {
+		token, err := utils.GenToken(name, id)
+		if err != nil {
+			fmt.Println("生成token失败")
+		}
 		c.JSON(http.StatusOK, gin.H{
-			"code": http.StatusOK,
-			"msg":  "登陆成功",
+			"code":  http.StatusOK,
+			"msg":   "登陆成功",
+			"token": token,
 		})
 		return
 	} else {
