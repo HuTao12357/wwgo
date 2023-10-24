@@ -2,6 +2,7 @@ package connection
 
 import (
 	"fmt"
+	"gorm.io/gorm"
 	"testing"
 )
 
@@ -11,8 +12,12 @@ type User struct {
 	Password string `json:"password" form:"password"`
 }
 
+func getNewDB() (D *gorm.DB) {
+	return GetMysql()
+}
 func TestMysql(t *testing.T) {
 	var user User
+	db := getNewDB()
 	result := db.Table("user").First(&user, "id=?", "1")
 	if result.Error != nil {
 		fmt.Println("查询错误")

@@ -4,13 +4,19 @@ import (
 	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"os"
 )
 
 var err error
 var db *gorm.DB
 
+var dbName = os.Getenv("DB_NAME")
+var dbPassword = os.Getenv("DB_PASSWORD")
+
+const port = "3306"
+
 func GetMysql() (db *gorm.DB) {
-	dsn := "root:123456@tcp(127.0.0.1:3306)/wwgo?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := fmt.Sprintf("%s:%s@tcp(127.0.0.1:%s)/wwgo?charset=utf8mb4&parseTime=True&loc=Local", dbName, dbPassword, port)
 	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		// 处理连接错误
