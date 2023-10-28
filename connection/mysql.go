@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/schema"
 	"os"
 	"time"
 )
@@ -18,7 +19,16 @@ const port = "3306"
 
 func GetMysql() (db *gorm.DB) {
 	dsn := fmt.Sprintf("%s:%s@tcp(127.0.0.1:%s)/wwgo?charset=utf8mb4&parseTime=True&loc=Local", dbName, dbPassword, port)
-	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	db, err = gorm.Open(mysql.New(mysql.Config{
+		DSN:               dsn,
+		DefaultStringSize: 171, //String类型的默认长度
+	}), &gorm.Config{
+		SkipDefaultTransaction: false, //不跳过默认默认事务
+		NamingStrategy: schema.NamingStrategy{
+			TablePrefix:   "gorm_", //前缀
+			SingularTable: true,    //使用单数表名
+		},
+	})
 	if err != nil {
 		// 处理连接错误
 		fmt.Println("连接错误==================")
