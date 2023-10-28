@@ -25,7 +25,7 @@ func main() {
 	//创建调度器
 	s := gocron.NewScheduler()
 	s.Every(1).Second().Do(task) //设置频率和执行的方法
-	s.Start()
+	//s.Start()
 	defer s.Clear()
 	//3.监听端口
 	r.Run(":8075")
