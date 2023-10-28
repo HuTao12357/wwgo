@@ -5,6 +5,7 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"os"
+	"time"
 )
 
 var err error
@@ -25,6 +26,10 @@ func GetMysql() (db *gorm.DB) {
 	/*
 		gorm库中没有Close()方法,因为DB实例在创建时被存储在一个连接池中，需要的时候自动获取连接，因此在使用完毕之后不用主动关闭数据库连接
 	*/
+	sqlDB, _ := db.DB()                 //GORM使用database/sql 来维护连接池
+	sqlDB.SetMaxIdleConns(10)           //连接池最大的空闲连接数
+	sqlDB.SetMaxOpenConns(40)           //连接池最大连接数量
+	sqlDB.SetConnMaxIdleTime(time.Hour) //连接池中连接的最大可复用时间
 	return
 }
 func init() {
