@@ -40,6 +40,7 @@ func GetMysql() (db *gorm.DB) {
 	sqlDB.SetMaxIdleConns(10)           //连接池最大的空闲连接数
 	sqlDB.SetMaxOpenConns(40)           //连接池最大连接数量
 	sqlDB.SetConnMaxIdleTime(time.Hour) //连接池中连接的最大可复用时间
+	sqlDB.Close()                       //关闭连接池
 	return
 }
 func init() {
