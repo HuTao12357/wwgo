@@ -35,8 +35,13 @@ func Test_Column(t *testing.T) {
 	//db.Migrator().AddColumn(&Book{}, "detail")
 	id, _ := uuid.NewRandom()
 	ids := id.String()
+	db.Begin()
 	book := Book{Id: ids, Name: "哈姆雷特", Author: "莎士比亚", Detail: "复仇"}
-	db.Table("gorm_book").Create(&book)
+	err := db.Table("gorm_book").Create(&book)
+	if err != nil {
+		db.Rollback()
+	}
+	db.Commit()
 }
 func getNewDB() (D *gorm.DB) {
 	return connection.GetMysql()
