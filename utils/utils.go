@@ -49,3 +49,18 @@ func GenToken(username string, userid string) (string, error) {
 	tmp, err := token.SignedString(mySecret)
 	return tmp, err
 }
+
+// 将字符进行大小写转换
+func StringCase(str string) (restr string) {
+	char := []rune(str) //rune int32，一般用来表示unicode
+	for k, v := range char {
+		if v >= 65 && v <= 90 {
+			char[k] = v + 32 //26个英文字母
+		} else if v >= 97 && v <= 122 {
+			char[k] = v - 32
+		} else {
+			return "字符串超出范围"
+		}
+	}
+	return string(char)
+}
