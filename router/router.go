@@ -10,7 +10,7 @@ func Router(r *gin.Engine) {
 	user := r.Group("User")
 	{
 		user.POST("login", us.Login)
-		user.POST("Insert", us.Insert)
+		user.POST("InsertOrUpdate", us.InsertOrUpdate)
 		user.GET("GetById", us.GetById)
 		user.GET("UserQuery", us.UsersQuery)
 		user.POST("BatchUserInsert", us.BatchUserInsert)

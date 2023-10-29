@@ -83,24 +83,32 @@ func Login(c *gin.Context) {
 	}
 }
 
-// 新增
-func Insert(c *gin.Context) {
+// 新增更新
+func InsertOrUpdate(c *gin.Context) {
 	var user User
 	db := getNewDB()
 	if err := c.ShouldBind(&user); err != nil {
 		c.AbortWithStatus(http.StatusBadRequest)
 		fmt.Print(err)
 	}
-	//密码加密
-	word := []byte(user.Password)
-	password := utils.HashAndSalt(word)
-	ids := uuid.NewV4().String()
-	newData := User{
-		Username: user.Username,
-		Password: password,
-		Id:       ids,
+	if user.Id == "" { //新增
+		//密码加密
+		word := []byte(user.Password)
+		password := utils.HashAndSalt(word)
+		ids := uuid.NewV4().String()
+		newData := User{
+			Username: user.Username,
+			Password: password,
+			Id:       ids,
+		}
+		db.Table("user").Create(newData)
+	} else {
+		word := []byte(user.Password)
+		password := utils.HashAndSalt(word)
+		user.Password = password
+		db.Table("user").Updates(user)
 	}
-	db.Table("user").Create(newData)
+
 }
 
 // id查询
