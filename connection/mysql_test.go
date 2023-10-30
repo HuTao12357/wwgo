@@ -12,6 +12,10 @@ type User struct {
 	Password string `json:"password" form:"password"`
 }
 
+func (u User) TableName() string {
+	return "user"
+}
+
 func getNewDB() (D *gorm.DB) {
 	return GetMysql()
 }
@@ -27,4 +31,10 @@ func TestMysql(t *testing.T) {
 	} else {
 		fmt.Println("查询到记录", user)
 	}
+}
+func TestMysql2(t *testing.T) {
+	var user User
+	db := getNewDB()
+	db.Find(&user, "3", user.TableName())
+	fmt.Println("数据：", user)
 }
