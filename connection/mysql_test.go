@@ -1,9 +1,11 @@
 package connection
 
 import (
+	"context"
 	"fmt"
 	"gorm.io/gorm"
 	"testing"
+	"time"
 )
 
 type User struct {
@@ -35,6 +37,9 @@ func TestMysql(t *testing.T) {
 func TestMysql2(t *testing.T) {
 	var user User
 	db := getNewDB()
-	db.Find(&user, "3", user.TableName())
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second) //返回一个上下文对象和一个取消函数
+	defer cancel()
+	time.Sleep(8 * time.Second) //睡眠8s
+	db.WithContext(ctx).Find(&user, "3", user.TableName())
 	fmt.Println("数据：", user)
 }
