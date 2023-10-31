@@ -183,3 +183,19 @@ func BatchUserInsert(c *gin.Context) {
 	})
 	return
 }
+
+// 查询每月的注册人数
+func GetEnrollNum(c *gin.Context) {
+	data := c.Query("year")
+	fmt.Println(data)
+	db := getNewDB()
+	monthNum := []map[string]interface{}{}
+	sql := fmt.Sprintf("SELECT months.month, IFNULL(data.count, 0) AS count\nFROM (\n  SELECT 1 AS month UNION SELECT 2 UNION SELECT 3 UNION SELECT 4\n  UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8\n  UNION SELECT 9 UNION SELECT 10 UNION SELECT 11 UNION SELECT 12\n) AS months\nLEFT JOIN (\n  SELECT MONTH(update_at) AS month, COUNT(*) AS count\n  FROM user as a \n  GROUP BY month\n) AS data ON months.month = data.month\nORDER BY months.month")
+	db.Raw(sql).Scan(&monthNum)
+	c.JSON(http.StatusOK, gin.H{
+		"code": http.StatusOK,
+		"msg":  "响应成功",
+		"data": monthNum,
+	})
+	return
+}
