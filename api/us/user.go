@@ -181,7 +181,13 @@ func BatchUserInsert(c *gin.Context) {
 	return
 }
 
-// 查询每月的注册人数
+// @Summary	查询每月的注册人数
+// @Produce json
+// @Param year query string false "年份"
+// @Success 200	{object} string "成功"
+// @Failure 400 {object} string "请求错误"
+// @Failure 500 {object} string "内部错误"
+// @Router /User/GetEnrollNum [get]
 func GetEnrollNum(c *gin.Context) {
 	data := c.Query("year")
 	fmt.Println(data)

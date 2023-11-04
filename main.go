@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/jasonlvhit/gocron"
-	"net/http"
 	"time"
 	"wwgo/router"
 )
@@ -14,13 +13,6 @@ var start = time.Now()
 func main() {
 	//1.创建路由
 	r := gin.Default()
-	//2.绑定路由规则
-	r.GET("/hello", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"code": 2001,
-			"msg":  "hello world",
-		})
-	})
 	router.Router(r)
 	//创建调度器
 	s := gocron.NewScheduler()
