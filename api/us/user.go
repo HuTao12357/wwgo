@@ -3,7 +3,6 @@ package us
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 	"net/http"
 	"strconv"
@@ -16,7 +15,7 @@ func getNewDB() (D *gorm.DB) {
 }
 
 type User struct {
-	Id       string `json:"id" form:"id"`
+	Id       int    `json:"id" form:"id"`
 	Username string `json:"username" form:"Username"`
 	Password string `json:"password" form:"password"`
 }
@@ -50,7 +49,6 @@ func Login(c *gin.Context) {
 		fmt.Println("登陆查询数据库没有数据")
 	} else {
 		DBword = user.Password
-		id = user.Id
 	}
 	a := utils.ComparePasswords(DBword, []byte(password))
 	if a == false {
@@ -91,15 +89,14 @@ func InsertOrUpdate(c *gin.Context) {
 		c.AbortWithStatus(http.StatusBadRequest)
 		fmt.Print(err)
 	}
-	if user.Id == "" { //新增
+	if user.Id != 0 { //新增
 		//密码加密
 		word := []byte(user.Password)
 		password := utils.HashAndSalt(word)
-		ids := uuid.NewV4().String()
+
 		newData := User{
 			Username: user.Username,
 			Password: password,
-			Id:       ids,
 		}
 		db.Table("user").Create(newData)
 	} else {
@@ -145,7 +142,8 @@ func UsersQuery(c *gin.Context) {
 	PageNo, _ := strconv.ParseInt(c.Query("PageNo"), 10, 64)
 	offset := (PageNo - 1) * PageSize
 	db := getNewDB()
-	db.Table("user").Offset(int(offset)).Limit(int(PageSize)).Find(&users)
+	db.Table("user").Offset(int(offset)).Limit(int(PageSize)).Order("id DESC").Find(&users)
+	//对分页后的数据进行操作
 	c.JSON(http.StatusOK, gin.H{
 		"code": http.StatusOK,
 		"msg":  "查询成功",
@@ -166,7 +164,6 @@ func BatchUserInsert(c *gin.Context) {
 	}
 	db := getNewDB()
 	for i := range user {
-		user[i].Id = uuid.NewV4().String()
 		user[i].Password = utils.HashAndSalt([]byte(user[i].Password))
 	}
 	res := db.Table("user").CreateInBatches(&user, len(user))
@@ -192,6 +189,12 @@ func GetEnrollNum(c *gin.Context) {
 	monthNum := []map[string]interface{}{}
 	sql := fmt.Sprintf("SELECT months.month, IFNULL(data.count, 0) AS count\nFROM (\n  SELECT 1 AS month UNION SELECT 2 UNION SELECT 3 UNION SELECT 4\n  UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8\n  UNION SELECT 9 UNION SELECT 10 UNION SELECT 11 UNION SELECT 12\n) AS months\nLEFT JOIN (\n  SELECT MONTH(update_at) AS month, COUNT(*) AS count\n  FROM user as a \n  GROUP BY month\n) AS data ON months.month = data.month\nORDER BY months.month")
 	db.Raw(sql).Scan(&monthNum)
+	for k, _ := range monthNum { //返回键和值,  迭代返回的值只是映射一个副本，而不是原始映射
+		if monthNum[k]["month"].(int64) == 1 { //interface {} is int64, not int
+			monthNum[k]["first"] = "第一月"
+		}
+	}
+	fmt.Println("====", monthNum)
 	c.JSON(http.StatusOK, gin.H{
 		"code": http.StatusOK,
 		"msg":  "响应成功",
