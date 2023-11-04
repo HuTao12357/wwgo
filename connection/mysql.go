@@ -10,7 +10,7 @@ import (
 )
 
 var err error
-var db *gorm.DB
+var DB *gorm.DB
 
 var dbName = os.Getenv("DB_NAME")
 var dbPassword = os.Getenv("DB_PASSWORD")
