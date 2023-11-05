@@ -5,6 +5,7 @@ import (
 	"gorm.io/gorm"
 	"net/http"
 	"wwgo/connection"
+	"wwgo/global"
 )
 
 type Book struct {
@@ -18,9 +19,8 @@ func getNewDB() (D *gorm.DB) {
 func GetById(c *gin.Context) {
 	id := c.Query("id")
 	var book Book
-	db := getNewDB()
 	//sql := fmt.Sprint
-	db.Table("book").Where(id, "1").Find(&book)
+	global.GLOBAL_DB.Table("book").Where(id, "1").Find(&book)
 	c.JSON(http.StatusOK, gin.H{
 		"code": http.StatusOK,
 		"msg":  "查询成功",

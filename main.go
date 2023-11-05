@@ -19,6 +19,7 @@ func main() {
 	s.Every(1).Second().Do(task) //设置频率和执行的方法
 	//s.Start()
 	defer s.Clear()
+
 	//3.监听端口
 	r.Run(":8075")
 }
