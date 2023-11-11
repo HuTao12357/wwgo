@@ -19,7 +19,10 @@ func Test_GormTable(t *testing.T) {
 
 	db := getNewDB()
 	M := db.Migrator()
-	M.CreateTable(&Book{})
+	err := M.CreateTable(&Book{})
+	if err != nil {
+		panic("发生了错误")
+	}
 }
 func Test_DropTable(t *testing.T) {
 	db := getNewDB()

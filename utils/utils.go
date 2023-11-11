@@ -7,16 +7,16 @@ import (
 	"time"
 )
 
-// 使用bcrypt加密密码,每一次都是不同的结果
+// HashAndSalt 使用bcrypt加密密码,每一次都是不同的结果
 func HashAndSalt(pwd []byte) string {
 	hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
 	if err != nil {
-		fmt.Sprintf("发生错误")
+		panic("加密过程发生错误")
 	}
 	return string(hash)
 }
 
-// 验证密码,正确返回true，错误返回false
+// ComparePasswords 验证密码,正确返回true，错误返回false
 func ComparePasswords(hashedPwd string, plainPwd []byte) bool {
 	byteHash := []byte(hashedPwd)
 	err := bcrypt.CompareHashAndPassword(byteHash, plainPwd)
@@ -26,7 +26,7 @@ func ComparePasswords(hashedPwd string, plainPwd []byte) bool {
 	return true
 }
 
-// GenToken 生成JWT
+// TokenExpireDuration GenToken 生成JWT
 const TokenExpireDuration = time.Hour * 2 //过期时间
 var mySecret = []byte("123456")           //密钥
 type MyClaims struct {
@@ -50,8 +50,8 @@ func GenToken(username string, userid string) (string, error) {
 	return tmp, err
 }
 
-// 将字符进行大小写转换
-func StringCase(str string) (restr string) {
+// StringCase 将字符进行大小写转换
+func StringCase(str string) (res string) {
 	char := []rune(str) //rune int32，一般用来表示unicode
 	for k, v := range char {
 		if v >= 65 && v <= 90 {

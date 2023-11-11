@@ -20,7 +20,7 @@ type User struct {
 	Password string `json:"password" form:"password"`
 }
 
-// 登录
+// Login 登录
 func Login(c *gin.Context) {
 	var user User
 	if err := c.ShouldBind(&user); err != nil {
@@ -40,7 +40,7 @@ func Login(c *gin.Context) {
 		})
 		return
 	}
-	var DBword string
+	var Dword string
 	var id string
 	db := getNewDB()
 	//sql := fmt.Sprintf("select * from user where username='%s' ", user.Username) //原生sql
@@ -48,9 +48,9 @@ func Login(c *gin.Context) {
 	if result.RowsAffected == 0 {
 		fmt.Println("登陆查询数据库没有数据")
 	} else {
-		DBword = user.Password
+		Dword = user.Password
 	}
-	a := utils.ComparePasswords(DBword, []byte(password))
+	a := utils.ComparePasswords(Dword, []byte(password))
 	if a == false {
 		c.JSON(http.StatusOK, gin.H{
 			"code": 2002,
@@ -81,7 +81,7 @@ func Login(c *gin.Context) {
 	}
 }
 
-// 新增更新
+// InsertOrUpdate 新增更新
 func InsertOrUpdate(c *gin.Context) {
 	var user User
 	db := getNewDB()
@@ -108,7 +108,7 @@ func InsertOrUpdate(c *gin.Context) {
 
 }
 
-// id查询
+// GetById id查询
 func GetById(c *gin.Context) {
 	id := c.Query("id") //接收前端传的id
 	var user User
@@ -135,7 +135,7 @@ func GetById(c *gin.Context) {
 	}
 }
 
-// 列表查询
+// UsersQuery 列表查询
 func UsersQuery(c *gin.Context) {
 	var users []User
 	PageSize, _ := strconv.ParseInt(c.Query("PageSize"), 10, 64)
@@ -152,7 +152,7 @@ func UsersQuery(c *gin.Context) {
 	return
 }
 
-// 批量添加,让前端传json
+// BatchUserInsert 批量添加,让前端传json
 func BatchUserInsert(c *gin.Context) {
 	var user []User
 	if err := c.ShouldBind(&user); err != nil {
@@ -181,7 +181,7 @@ func BatchUserInsert(c *gin.Context) {
 	return
 }
 
-// @Summary	查询每月的注册人数
+// GetEnrollNum @Summary	查询每月的注册人数
 // @Produce json
 // @Param year query string false "年份"
 // @Success 200	{object} string "成功"
@@ -192,10 +192,11 @@ func GetEnrollNum(c *gin.Context) {
 	data := c.Query("year")
 	fmt.Println(data)
 	db := getNewDB()
-	monthNum := []map[string]interface{}{}
-	sql := fmt.Sprintf("SELECT months.month, IFNULL(data.count, 0) AS count\nFROM (\n  SELECT 1 AS month UNION SELECT 2 UNION SELECT 3 UNION SELECT 4\n  UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8\n  UNION SELECT 9 UNION SELECT 10 UNION SELECT 11 UNION SELECT 12\n) AS months\nLEFT JOIN (\n  SELECT MONTH(update_at) AS month, COUNT(*) AS count\n  FROM user as a \n  GROUP BY month\n) AS data ON months.month = data.month\nORDER BY months.month")
+
+	var monthNum []map[string]interface{}
+	var sql = fmt.Sprintf("SELECT months.month, IFNULL(data.count, 0) AS count\nFROM (\n  SELECT 1 AS month UNION SELECT 2 UNION SELECT 3 UNION SELECT 4\n  UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8\n  UNION SELECT 9 UNION SELECT 10 UNION SELECT 11 UNION SELECT 12\n) AS months\nLEFT JOIN (\n  SELECT MONTH(update_at) AS month, COUNT(*) AS count\n  FROM user as a \n  GROUP BY month\n) AS data ON months.month = data.month\nORDER BY months.month")
 	db.Raw(sql).Scan(&monthNum)
-	for k, _ := range monthNum { //返回键和值,  迭代返回的值只是映射一个副本，而不是原始映射
+	for k := range monthNum { //返回键和值,  迭代返回的值只是映射一个副本，而不是原始映射
 		if monthNum[k]["month"].(int64) == 1 { //interface {} is int64, not int
 			monthNum[k]["first"] = "第一月"
 		}
