@@ -21,5 +21,6 @@ func Router(r *gin.Engine) {
 	book := r.Group("book")
 	{
 		book.GET("getById", bo.GetById)
+		book.GET("getRate", bo.GetNumRate)
 	}
 }

@@ -8,6 +8,7 @@ require (
 	github.com/google/uuid v1.4.0
 	github.com/jasonlvhit/gocron v0.0.1
 	github.com/satori/go.uuid v1.2.0
+	github.com/shopspring/decimal v1.3.1
 	github.com/swaggo/swag v1.16.2
 	golang.org/x/crypto v0.14.0
 	gorm.io/driver/mysql v1.5.2
