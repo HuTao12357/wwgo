@@ -64,3 +64,31 @@ func StringCase(str string) (res string) {
 	}
 	return string(char)
 }
+
+// IsEmptyString go没有工具类直接判断是否为空
+// IsEmptyString  字符串
+func IsEmptyString(str string) bool {
+	if len(str) == 0 {
+		return false
+	} else {
+		return true
+	}
+}
+
+// IsEmptyArray 切片
+func IsEmptyArray(str interface{}) bool {
+	//只能使用断言了，go还不支持原生泛型
+	switch arr := str.(type) {
+	case []int:
+		return len(arr) == 0
+	case []string:
+		return len(arr) == 0
+	case []float64:
+		return len(arr) == 0
+	case []float32:
+		return len(arr) == 0
+	case []bool:
+		return len(arr) == 0
+	}
+	return false
+}
