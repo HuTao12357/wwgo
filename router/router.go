@@ -22,5 +22,6 @@ func Router(r *gin.Engine) {
 	{
 		book.GET("getById", bo.GetById)
 		book.GET("getRate", bo.GetNumRate)
+		book.POST("getExcel", bo.GetExcel)
 	}
 }
