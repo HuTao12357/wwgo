@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
+	"strings"
 	"time"
 )
 
@@ -66,7 +67,6 @@ func StringCase(str string) (res string) {
 }
 
 // IsEmptyString go没有工具类直接判断是否为空
-// IsEmptyString  字符串
 func IsEmptyString(str string) bool {
 	if len(str) == 0 {
 		return false
@@ -91,4 +91,13 @@ func IsEmptyArray(str interface{}) bool {
 		return len(arr) == 0
 	}
 	return false
+}
+
+// StringAdd 字符串相加
+func StringAdd(s, str string) string {
+	var result strings.Builder
+	result.WriteString(s)
+	result.WriteString(str)
+	s2 := result.String()
+	return s2
 }
