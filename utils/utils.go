@@ -186,3 +186,11 @@ func GetTimeNow() string {
 func GetCurrentTimestamp() int64 {
 	return time.Now().Unix()
 }
+
+// Sum int求和
+func Sum(num ...int) (total int) {
+	for _, v := range num {
+		total += v
+	}
+	return total
+}
