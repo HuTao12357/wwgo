@@ -167,3 +167,22 @@ func DeleteFile(fileName string) bool {
 	}
 	return true
 }
+
+// GetTimeNowHM 获取当前时间string，带有时分秒
+func GetTimeNowHM() string {
+	ft := fmt.Sprintf("2006-01-02 15:04:05")
+	timeNow := time.Now().Format(ft)
+	return timeNow
+}
+
+// GetTimeNow 获取当前时间string，没有时分秒
+func GetTimeNow() string {
+	ft := fmt.Sprintf("2006-01-02")
+	timeNow := time.Now().Format(ft)
+	return timeNow
+}
+
+// GetCurrentTimestamp 获取当前时间戳
+func GetCurrentTimestamp() int64 {
+	return time.Now().Unix()
+}
