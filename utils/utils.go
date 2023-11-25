@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
+	"os"
 	"strings"
 	"time"
 )
@@ -100,4 +101,69 @@ func StringAdd(s, str string) string {
 	result.WriteString(str)
 	s2 := result.String()
 	return s2
+}
+
+// CreatFile 创建文件
+func CreatFile(fileName string) string {
+	file, err := os.Create(fileName)
+	if err != nil {
+		return "创建文件失败"
+	}
+	defer file.Close()
+	str := fmt.Sprintf("创建文件：%s成功", fileName)
+	return str
+}
+
+// WriteContent 清空文件，并写入内容
+func WriteContent(content, fileName string) string {
+	file, err := os.OpenFile(fileName, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
+	//os.O_TRUNC：清除文件以前内容
+	if err != nil {
+		return "打开文件失败"
+	}
+	_, err = file.WriteString(content)
+	file.WriteString("\n")
+	if err != nil {
+		return "写入失败"
+	}
+	defer file.Close()
+	return "写入成功"
+}
+
+// WriteContentAdd 追加内容
+func WriteContentAdd(content, fileName string) string {
+	file, err := os.OpenFile(fileName, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+	/**
+	os.O_WRONLY：表示只写方式打开文件
+	os.O_CREATE：表示没有就创建
+	os.O_APPEND：在文件末尾添加文件
+	*/
+	if err != nil {
+		return "打开文件失败"
+	}
+	_, err = file.WriteString(content)
+	file.WriteString("\n")
+	if err != nil {
+		return "写入失败"
+	}
+	defer file.Close()
+	return "写入成功"
+}
+
+// ReadFile 读取文件
+func ReadFile(fileName string) string {
+	file, err := os.ReadFile(fileName)
+	if err != nil {
+		return "读取文件失败"
+	}
+	return string(file)
+}
+
+// DeleteFile 删除文件
+func DeleteFile(fileName string) bool {
+	err := os.Remove(fileName)
+	if err != nil {
+		return false
+	}
+	return true
 }
