@@ -9,6 +9,7 @@ import (
 	"math"
 	"net/http"
 	"os"
+	"wwgo/common"
 	"wwgo/global"
 )
 
@@ -124,4 +125,9 @@ func GetExcel(c *gin.Context) {
 		"msg":  "查询成功",
 		"data": book,
 	})
+}
+func TestResult(c *gin.Context) {
+	data := "hello go"
+	resp := common.Success(data)
+	c.JSON(http.StatusOK, resp)
 }
