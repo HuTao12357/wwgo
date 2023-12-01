@@ -15,3 +15,10 @@ func Success(data interface{}) (result *Result) {
 		Data: data,
 	}
 }
+func Fail(data interface{}, err error) (result *Result) {
+	return &Result{
+		Code: http.StatusOK,
+		Msg:  err.Error(),
+		Data: data,
+	}
+}

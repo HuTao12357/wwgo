@@ -128,6 +128,7 @@ func GetExcel(c *gin.Context) {
 }
 func TestResult(c *gin.Context) {
 	data := "hello go"
-	resp := common.Success(data)
+	err := common.Foo()
+	resp := common.Fail(data, err)
 	c.JSON(http.StatusOK, resp)
 }
