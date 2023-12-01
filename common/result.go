@@ -17,7 +17,7 @@ func Success(data interface{}) (result *Result) {
 }
 func Fail(data interface{}, err error) (result *Result) {
 	return &Result{
-		Code: http.StatusOK,
+		Code: ErrorCode,
 		Msg:  err.Error(),
 		Data: data,
 	}
