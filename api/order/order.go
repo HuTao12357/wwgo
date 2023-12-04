@@ -59,10 +59,10 @@ func Add(c *gin.Context) {
 		})
 	}
 	accumulator := decimal.NewFromInt(0)
-	for k, v := range book {
-		for i := 0; i < len(slice); i++ {
-			if book[k].BookName == slice[i].Name {
-				accumulator = accumulator.Add(v.Money.Mul(decimal.NewFromInt(int64(slice[i].Num))))
+	for k := range slice {
+		for i := 0; i < len(book); i++ {
+			if slice[k].Name == book[i].BookName {
+				accumulator = accumulator.Add(book[i].Money.Mul(decimal.NewFromInt(int64(slice[k].Num))))
 			}
 		}
 	}
@@ -79,4 +79,5 @@ func Add(c *gin.Context) {
 		c.JSON(http.StatusOK, common.DbFail(err.Error()))
 		return
 	}
+	c.JSON(http.StatusOK, common.Success("操作成功"))
 }
