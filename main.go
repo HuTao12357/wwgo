@@ -14,6 +14,7 @@ func main() {
 	//1.创建路由
 	r := gin.Default()
 	router.Router(r)
+	r.Use(CorsMiddleWare()) //跨域
 	//创建调度器
 	s := gocron.NewScheduler()
 	s.Every(1).Second().Do(task) //设置频率和执行的方法
