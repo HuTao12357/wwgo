@@ -29,6 +29,7 @@ func Router(r *gin.Engine) {
 	or := r.Group("order")
 	{
 		or.POST("add", order.Add)
+		or.POST("page", order.Page)
 	}
 
 }
