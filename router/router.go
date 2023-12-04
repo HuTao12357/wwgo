@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"wwgo/api/bo"
+	"wwgo/api/order"
 	"wwgo/api/us"
 )
 
@@ -25,4 +26,9 @@ func Router(r *gin.Engine) {
 		book.POST("getExcel", bo.GetExcel)
 		book.GET("testResult", bo.TestResult)
 	}
+	or := r.Group("order")
+	{
+		or.POST("add", order.Add)
+	}
+
 }

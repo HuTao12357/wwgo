@@ -22,3 +22,9 @@ func Fail(data interface{}, err error) (result *Result) {
 		Data: data,
 	}
 }
+func DbFail(data interface{}) (result *Result) {
+	return &Result{
+		Code: ErrorCode,
+		Data: data,
+	}
+}

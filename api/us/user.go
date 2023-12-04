@@ -6,6 +6,7 @@ import (
 	"gorm.io/gorm"
 	"net/http"
 	"strconv"
+	"wwgo/common"
 	"wwgo/connection"
 	"wwgo/utils"
 )
@@ -18,6 +19,7 @@ type User struct {
 	Id       int    `json:"id" form:"id"`
 	Username string `json:"username" form:"Username"`
 	Password string `json:"password" form:"password"`
+	Phone    string `json:"phone" form:"phone"`
 }
 
 // Login 登录
@@ -201,11 +203,6 @@ func GetEnrollNum(c *gin.Context) {
 			monthNum[k]["first"] = "第一月"
 		}
 	}
-	fmt.Println("====", monthNum)
-	c.JSON(http.StatusOK, gin.H{
-		"code": http.StatusOK,
-		"msg":  "响应成功",
-		"data": monthNum,
-	})
+	c.JSON(http.StatusOK, common.Success(monthNum))
 	return
 }
