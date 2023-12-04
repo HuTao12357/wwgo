@@ -18,7 +18,7 @@ func PageVO(pageNum int, pageSize int, dto interface{}, db *gorm.DB) *PageInfo {
 	if err := db.Model(dto).Count(&total).Error; err != nil {
 		fmt.Println(err)
 	}
-	if err := db.Offset((pageNum - 1) * pageSize).Limit(pageSize).Find(dto).Error; err != nil {
+	if err := db.Offset((pageNum - 1) * pageSize).Limit(pageSize).Find(dto).Order("created_at desc").Error; err != nil {
 		fmt.Println(err)
 	}
 	return &PageInfo{
