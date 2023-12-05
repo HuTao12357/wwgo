@@ -6,25 +6,25 @@ import (
 )
 
 type PageInfo struct {
-	PageNum  int         `json:"pageNum"`
-	PageSize int         `json:"pageSize"`
-	Total    int         `json:"total"`
-	Data     interface{} `json:"data" gorm:"-"`
+	PageNum  int `json:"pageNum"`
+	PageSize int `json:"pageSize"`
+	Total    int `json:"total"`
 }
 
-func PageVO(pageNum int, pageSize int, dto interface{}, db *gorm.DB) *PageInfo {
+func PageVO(pageNum int, pageSize int, dto string, db *gorm.DB) *PageInfo {
 	var total int64
-	//var data interface{}
-	if err := db.Model(dto).Count(&total).Error; err != nil {
-		fmt.Println(err)
+	if pageNum == 0 {
+		pageNum = 1
 	}
-	if err := db.Offset((pageNum - 1) * pageSize).Limit(pageSize).Find(dto).Order("created_at desc").Error; err != nil {
+	if pageSize == 0 {
+		pageSize = 10
+	}
+	if err := db.Table(dto).Count(&total).Error; err != nil {
 		fmt.Println(err)
 	}
 	return &PageInfo{
 		PageNum:  pageNum,
 		PageSize: pageSize,
 		Total:    int(total),
-		Data:     dto,
 	}
 }

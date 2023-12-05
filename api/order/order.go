@@ -13,14 +13,13 @@ import (
 )
 
 type Order struct {
-	Id       int             `json:"id" form:"id" gorm:"primary_key"`
+	Id       int             `json:"id" form:"id" gorm:"primary_key" gorm:"column:id"`
 	OrderSn  string          `json:"order_sn" form:"order_sn"`
 	UserId   int             `json:"user_id" form:"user_id"`
 	Phone    string          `json:"phone" form:"phone"`
 	Amount   decimal.Decimal `json:"amount" form:"amount"`
 	Integral int             `json:"integral" form:"integral"`
 	Details  []Detail        `json:"detail" form:"detail" gorm:"-"`
-	Page     common.PageInfo `gorm:"-"`
 }
 
 type Detail struct {
@@ -84,18 +83,16 @@ func Add(c *gin.Context) {
 }
 
 func Page(c *gin.Context) {
-	var order Order
-	if err := c.ShouldBindJSON(&order); err != nil {
+	var page common.PageInfo
+	u := &Order{} //创建空的对象返回它的指针
+	var data []Order
+	if err := c.ShouldBindJSON(&page); err != nil {
 		c.JSON(http.StatusOK, common.Fail("参数错误", err))
 		return
 	}
-	if order.Page.PageNum == 0 {
-		order.Page.PageNum = 1
-	}
-	if order.Page.PageSize == 0 {
-		order.Page.PageSize = 10
-	}
-	data := common.PageVO(order.Page.PageNum, order.Page.PageSize, &order, global.GlobalDB)
-	c.JSON(http.StatusOK, common.Success(data))
-
+	num := page.PageNum
+	size := page.PageSize
+	pageInfo := common.PageVO(num, size, u.TableName(), global.GlobalDB)
+	global.GlobalDB.Offset((num - 1) * size).Limit(size).Order("id desc").Find(&data)
+	c.JSON(http.StatusOK, common.PageSuccess(data, *pageInfo))
 }
