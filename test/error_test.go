@@ -1,8 +1,8 @@
 package test
 
 import (
-	"errors"
 	"fmt"
+	"github.com/pkg/errors"
 	"testing"
 )
 
@@ -18,7 +18,7 @@ func TestError(t *testing.T) {
 }
 func div(a, b int) (int, error) {
 	if b == 0 {
-		err := errors.New("除数不为0")
+		err := errors.New("除数为0")
 		return 0, err
 	} else {
 		return a / b, nil
