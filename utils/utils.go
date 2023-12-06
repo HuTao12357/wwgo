@@ -194,3 +194,16 @@ func Sum(num ...int) (total int) {
 	}
 	return total
 }
+
+// 检验截取切片长度
+func slice(s interface{}, lens int) bool {
+	slices, ok := s.([]interface{})
+	if !ok {
+		if lens > len(slices) || len(slices) == 0 {
+			return false
+		} else {
+			return true
+		}
+	}
+	return false
+}
