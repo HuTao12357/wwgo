@@ -7,6 +7,7 @@ var check SliceInterface = &SortExistence{}
 type SliceInterface interface {
 	SliceIsExit(arr []string, one string) (index int, isExit bool)
 	SliceRemoveInt(int, []int) []int
+	SliceDuplicates(arr []int) []int
 }
 type SortExistence struct {
 }
@@ -18,6 +19,7 @@ func (s *SortExistence) SliceIsExit(arr []string, one string) (index int, isExit
 	return index, isExit
 }
 
+// SliceRemoveInt remove
 func (s *SortExistence) SliceRemoveInt(a int, arr []int) []int {
 	var index int
 	for k, v := range arr {
@@ -27,4 +29,17 @@ func (s *SortExistence) SliceRemoveInt(a int, arr []int) []int {
 	}
 	arr = append(arr[:index], arr[index+1:]...) //...表示将切片或数组拆开，作为可变参数传递给函数
 	return arr
+}
+
+// 去重
+func removeDuplicates(arr []int) []int {
+	noMap := make(map[int]bool)
+	res := make([]int, 0)
+	for _, v := range arr {
+		if noMap[v] == false {
+			noMap[v] = true
+			res = append(res, v)
+		}
+	}
+	return res
 }
