@@ -12,6 +12,19 @@ type SliceInterface interface {
 type SortExistence struct {
 }
 
+// 切片去重
+func (s *SortExistence) SliceDuplicates(arr []int) []int {
+	noMap := make(map[int]bool)
+	res := make([]int, 0)
+	for _, v := range arr {
+		if noMap[v] == false {
+			noMap[v] = true
+			res = append(res, v)
+		}
+	}
+	return res
+}
+
 // SliceIsExit 判断切片中是否存在某一元素 string类型
 func (s *SortExistence) SliceIsExit(arr []string, one string) (index int, isExit bool) {
 	index = sort.SearchStrings(arr, one) //采用了二分查找，找到返回索引位置，没有找到返回可以插入的位置
@@ -29,17 +42,4 @@ func (s *SortExistence) SliceRemoveInt(a int, arr []int) []int {
 	}
 	arr = append(arr[:index], arr[index+1:]...) //...表示将切片或数组拆开，作为可变参数传递给函数
 	return arr
-}
-
-// 去重
-func removeDuplicates(arr []int) []int {
-	noMap := make(map[int]bool)
-	res := make([]int, 0)
-	for _, v := range arr {
-		if noMap[v] == false {
-			noMap[v] = true
-			res = append(res, v)
-		}
-	}
-	return res
 }
