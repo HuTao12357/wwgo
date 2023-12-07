@@ -8,11 +8,25 @@ type SliceInterface interface {
 	SliceIsExit(arr []string, one string) (index int, isExit bool)
 	SliceRemoveInt(int, []int) []int
 	SliceDuplicates(arr []int) []int
+	SliceBathRemoves(arr []int, index []int) []int
 }
 type SortExistence struct {
 }
 
-// 切片去重
+// SliceBathRemoves 切片批量删除(索引)
+func (s *SortExistence) SliceBathRemoves(arr []int, index []int) []int {
+	if len(arr) == 0 || len(index) == 0 {
+		return arr
+	}
+	//索引逆序排序
+	sort.Sort(sort.Reverse(sort.IntSlice(index)))
+	//获取索引值
+	k := index[0]
+	arr = append(arr[:k], arr[k+1:]...)
+	return s.SliceBathRemoves(arr, index[1:])
+}
+
+// SliceDuplicates 切片去重
 func (s *SortExistence) SliceDuplicates(arr []int) []int {
 	noMap := make(map[int]bool)
 	res := make([]int, 0)
