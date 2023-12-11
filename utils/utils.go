@@ -5,6 +5,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
 	"os"
+	"sort"
 	"strings"
 	"time"
 )
@@ -206,4 +207,19 @@ func slice(s interface{}, lens int) bool {
 		}
 	}
 	return false
+}
+
+// IsSortSlice 判断切片是否排序并返回sort后的切片
+func IsSortSlice(arr []int) ([]int, bool) {
+	is := sort.SliceIsSorted(arr, func(i, j int) bool {
+		return arr[i] < arr[j]
+	})
+	if is {
+		fmt.Println("已经排过序了")
+		return arr, is
+	}
+	sort.Slice(arr, func(i, j int) bool {
+		return arr[i] < arr[j]
+	})
+	return arr, false
 }
