@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.9.1
+	github.com/go-redis/redis v6.15.5+incompatible
 	github.com/google/uuid v1.4.0
 	github.com/jasonlvhit/gocron v0.0.1
 	github.com/pkg/errors v0.9.1
@@ -13,6 +14,7 @@ require (
 	github.com/swaggo/swag v1.16.2
 	github.com/xuri/excelize/v2 v2.8.0
 	golang.org/x/crypto v0.15.0
+	gopkg.in/yaml.v2 v2.4.0
 	gorm.io/driver/mysql v1.5.2
 	gorm.io/driver/postgres v1.5.4
 	gorm.io/gorm v1.25.5
@@ -63,6 +65,5 @@ require (
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/tools v0.7.0 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

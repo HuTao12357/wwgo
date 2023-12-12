@@ -25,3 +25,10 @@ func TestMysqlGet(t *testing.T) {
 	db.Where("id = ?", "3").First(&user)
 	fmt.Println("数据：", user)
 }
+
+func TestRedisGet(t *testing.T) {
+	rdb := GetRedis()
+	rdb.Set("money", 6999, 0)
+	v := rdb.Get("money")
+	fmt.Println(v)
+}

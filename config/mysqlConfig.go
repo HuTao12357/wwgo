@@ -18,10 +18,15 @@ type Config struct {
 		User     string `yaml:"user"`
 		Password string `yaml:"password"`
 	}
+	Redis struct {
+		Addr     string `yaml:"addr"`
+		Password string `yaml:"password"`
+		Db       int    `yaml:"db"`
+	}
 }
 
-func GetMysqlConfig() (*Config, error) {
-	filepath := "mysql.yml"
+func GetConfig() (*Config, error) {
+	filepath := "config.yml"
 	file, err := os.ReadFile(filepath)
 	if err != nil {
 		log.Fatalf("fail to read config file: %v", err)
@@ -36,7 +41,7 @@ func GetMysqlConfig() (*Config, error) {
 	return config, nil
 }
 func MysqlGet() (*gorm.DB, error) {
-	config, err := GetMysqlConfig()
+	config, err := GetConfig()
 	if err != nil {
 		log.Fatalf("fail to get config: %v", err)
 	}
