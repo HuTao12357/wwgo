@@ -28,8 +28,8 @@ type Ids struct {
 func GetById(c *gin.Context) {
 	id := c.Query("id")
 	var book Book
-	//sql := fmt.Sprint
 	global.GlobalDB.Table("book").Where(id, "1").Find(&book)
+	global.GlobalDB.Debug().Table("book").Where("id = ?", id).Find(&book) //DEBUG查看执行的sql,sql会有:表明.id,是gorm自动添加到，避免id字段存在多个表中引起的歧义
 	c.JSON(http.StatusOK, gin.H{
 		"code": http.StatusOK,
 		"msg":  "查询成功",
