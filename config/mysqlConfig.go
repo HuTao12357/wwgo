@@ -7,6 +7,7 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"os"
+	"path/filepath"
 )
 
 // Config 创建结构体解析配置信息
@@ -26,8 +27,10 @@ type Config struct {
 }
 
 func GetConfig() (*Config, error) {
-	filepath := "config.yml"
-	file, err := os.ReadFile(filepath)
+	var s = "./config.yml"
+	//得到绝对路径
+	s1, _ := filepath.Abs(s)
+	file, err := os.ReadFile(s1)
 	if err != nil {
 		log.Fatalf("fail to read config file: %v", err)
 		return nil, err

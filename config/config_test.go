@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"log"
+	"path/filepath"
 	"testing"
 )
 
@@ -31,4 +32,10 @@ func TestRedisGet(t *testing.T) {
 	rdb.Set("money", 6999, 0)
 	v := rdb.Get("money")
 	fmt.Println(v)
+}
+func TestYmlPath(t *testing.T) {
+	var s = "./config.yml"
+	//得到绝对路径
+	s1, _ := filepath.Abs(s)
+	fmt.Println(s1)
 }
