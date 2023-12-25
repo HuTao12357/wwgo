@@ -27,9 +27,10 @@ type Config struct {
 }
 
 func GetConfig() (*Config, error) {
-	var s = "./config.yml"
-	//得到绝对路径
-	s1, _ := filepath.Abs(s)
+	var s = "config.yml"
+	wd, _ := os.Getwd()
+	s2 := "config"
+	s1 := filepath.Join(wd, s2, s)
 	file, err := os.ReadFile(s1)
 	if err != nil {
 		log.Fatalf("fail to read config file: %v", err)

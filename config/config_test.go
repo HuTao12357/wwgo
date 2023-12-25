@@ -34,7 +34,7 @@ func TestRedisGet(t *testing.T) {
 	fmt.Println(v)
 }
 func TestYmlPath(t *testing.T) {
-	var s = "./config.yml"
+	var s = "config.yml"
 	//得到绝对路径
 	s1, _ := filepath.Abs(s)
 	fmt.Println(s1)
