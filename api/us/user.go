@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	"log"
 	"net/http"
 	"strconv"
 	"wwgo/common"
+	"wwgo/config"
 	"wwgo/connection"
 	"wwgo/utils"
 )
@@ -205,4 +207,26 @@ func GetEnrollNum(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, common.Success(monthNum))
 	return
+}
+func ExecInsert(c *gin.Context) {
+	var user User
+	if err := c.ShouldBind(&user); err != nil {
+		c.AbortWithStatus(http.StatusBadRequest)
+		log.Println("绑定user发生了错误:", err)
+	}
+	db, _ := config.MysqlGet()
+	/*
+		Id       int    `json:"id" form:"id"`
+			Username string `json:"username" form:"Username"`
+			Password string `json:"password" form:"password"`
+			Phone    string `json:"phone" form:"phone"`
+	*/
+	sql := "INSERT INTO user (username, password, phone) VALUES (?, ?, ?)" //？占位符防止sql注入
+	res := db.Exec(sql, user.Username, user.Password, user.Phone)
+	if res.RowsAffected > 0 {
+		c.JSON(http.StatusOK, common.Success("添加成功"))
+	} else {
+		c.JSON(http.StatusOK, common.Success("添加失败"))
+	}
+
 }

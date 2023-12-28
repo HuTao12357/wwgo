@@ -17,6 +17,7 @@ func Router(r *gin.Engine) {
 		user.GET("UserQuery", us.UsersQuery)
 		user.POST("BatchUserInsert", us.BatchUserInsert)
 		user.GET("GetEnrollNum", us.GetEnrollNum)
+		user.POST("ExecInsert", us.ExecInsert)
 	}
 	//书
 	book := r.Group("book")
@@ -30,6 +31,7 @@ func Router(r *gin.Engine) {
 	{
 		or.POST("add", order.Add)
 		or.POST("page", order.Page)
+		or.GET("GetDetail", order.GetDetail)
 	}
 
 }
