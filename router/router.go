@@ -18,6 +18,7 @@ func Router(r *gin.Engine) {
 		user.POST("BatchUserInsert", us.BatchUserInsert)
 		user.GET("GetEnrollNum", us.GetEnrollNum)
 		user.POST("ExecInsert", us.ExecInsert)
+		user.POST("inGet", us.InGet)
 	}
 	//书
 	book := r.Group("book")

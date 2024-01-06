@@ -228,5 +228,18 @@ func ExecInsert(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusOK, common.Success("添加失败"))
 	}
+}
 
+// InGet gorm实现mybatis的foreach
+func InGet(c *gin.Context) {
+	var user []User
+	var id []int
+	if err := c.ShouldBindJSON(&id); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	log.Println(id)
+	db, _ := config.MysqlGet()
+	db.Table("user").Where("id IN (?)", id).Find(&user)
+	c.JSON(http.StatusOK, common.Success(user))
 }
