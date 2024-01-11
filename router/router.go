@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"wwgo/api/bo"
+	menu "wwgo/api/menu"
 	"wwgo/api/order"
 	"wwgo/api/us"
 )
@@ -33,6 +34,11 @@ func Router(r *gin.Engine) {
 		or.POST("add", order.Add)
 		or.POST("page", order.Page)
 		or.GET("GetDetail", order.GetDetail)
+	}
+
+	me := r.Group("menu")
+	{
+		me.GET("getMenu", menu.GetMenuTree)
 	}
 
 }
